@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { GreetCommand, TimeCommand } from "./commands";
+import { SpongeBobCommand, SpongeBobImgCommand } from "./commands";
 import Command from "./commands/commandInterface";
 import { CommandParser } from "./models/commandParser";
 
@@ -12,8 +12,8 @@ export default class CommandHandler {
   constructor(prefix: string) {
 
     const commandClasses = [
-      GreetCommand,
-      TimeCommand
+      SpongeBobCommand,
+      SpongeBobImgCommand,
     ];
 
     this.commands = commandClasses.map(commandClass => new commandClass());
@@ -26,16 +26,15 @@ export default class CommandHandler {
       return;
     }
 
-    message.reply(`Hive Greeter recieved '${this.echoMessage(message)}' from ${message.author.tag}`);
-
     const commandParser = new CommandParser(message, this.prefix);
 
-    const matchedCommand = this.commands.find(command => command.commandNames.includes(commandParser.parsedCommandName));
+    const matchedCommand = this.commands.find(command => 
+        command.commandNames.includes(commandParser.parsedCommandName));
 
     if (!matchedCommand) {
-      await message.reply(`I don't recognize that command. Try !help.`);
+      await message.reply(`I don't recognize that command.`);
     } else {
-      await matchedCommand.run(message).catch(error => {
+      await matchedCommand.run(message, commandParser.args).catch(error => {
         message.reply(`'${this.echoMessage(message)}' failed because of ${error}`);
       });
     }

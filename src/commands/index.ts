@@ -11,5 +11,5 @@
  * DO NOT export command classes using default
  */
 
-export * from "./greetCommand";
-export * from "./timeCommand";
+export * from "./spongebobCommand";
+export * from "./spongebobImgCommand";
