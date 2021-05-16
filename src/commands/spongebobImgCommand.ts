@@ -1,8 +1,5 @@
 import { Message, MessageAttachment } from "discord.js";
 import Command from "./commandInterface";
-import axios from "axios";
-import { URLSearchParams } from "url";
-import { IMGFLIP_ACCT, IMGFLIP_PWD } from "../config/secrets";
 
 export class SpongeBobImgCommand implements Command {
   commandNames = ["sbimg", "mockimg"];
