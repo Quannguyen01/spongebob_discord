@@ -29,7 +29,7 @@ export default class CommandHandler {
 
     const commandParser = new CommandParser(message, this.prefix);
 
-    const matchedCommand = this.commands.find(command => 
+    const matchedCommand = this.commands.find(command =>
         command.commandNames.includes(commandParser.parsedCommandName));
 
     if (!matchedCommand) {

@@ -2,6 +2,7 @@ import { Message, MessageAttachment } from "discord.js";
 import { CommandParser } from "../models/commandParser";
 import Command from "./commandInterface";
 import config from '../config/botConfig';
+import { replaceMentionWithUsers } from "../utils";
 
 export class SpongeBobImgCommand implements Command {
   commandNames = ["sbimg", "mockimg"];
@@ -11,6 +12,7 @@ export class SpongeBobImgCommand implements Command {
   }
 
   async run(message: Message): Promise<void> {
+    message.content = replaceMentionWithUsers(message);
     const commandParser = new CommandParser(message, config.prefix);
 
     let spongeTexts = commandParser.args.map(word => this.spongebobify(word));

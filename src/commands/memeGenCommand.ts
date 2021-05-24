@@ -2,6 +2,7 @@ import { Message, MessageAttachment } from "discord.js";
 import Command from "./commandInterface";
 import config from "../config/botConfig";
 import { CommandParser } from "../models/commandParser";
+import { replaceMentionWithUsers } from "../utils";
 
 export class MemeGenCommand implements Command {
   commandNames = [
@@ -165,10 +166,12 @@ export class MemeGenCommand implements Command {
   }
 
   async run(message: Message): Promise<void> {
+    message.content = replaceMentionWithUsers(message);
     const commandParser = new CommandParser(message, config.prefix);
 
     if (commandParser.parsedCommandName === "listmeme") {
-      const memes = this.commandNames.filter(command => command !== "listmeme")
+      const memes = this.commandNames
+        .filter(command => command !== "listmeme")
         .join(", ");
       const messages = `List of memes:\n > ${memes}`
       await message.reply(messages);
@@ -176,7 +179,7 @@ export class MemeGenCommand implements Command {
     }
 
     const memeTexts = commandParser.args;
-    let topText, bottomText;
+    let topText, bottomText: string;
     if (memeTexts.includes("|")) {
       topText = memeTexts.slice(0, memeTexts.indexOf("|")).join(' ');
       bottomText = memeTexts.slice(memeTexts.indexOf("|") + 1).join(' ');
