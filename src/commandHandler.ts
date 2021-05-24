@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { SpongeBobCommand, SpongeBobImgCommand } from "./commands";
+import { SpongeBobCommand, SpongeBobImgCommand, MemeGenCommand } from "./commands";
 import Command from "./commands/commandInterface";
 import { CommandParser } from "./models/commandParser";
 
@@ -14,6 +14,7 @@ export default class CommandHandler {
     const commandClasses = [
       SpongeBobCommand,
       SpongeBobImgCommand,
+      MemeGenCommand,
     ];
 
     this.commands = commandClasses.map(commandClass => new commandClass());
@@ -34,7 +35,7 @@ export default class CommandHandler {
     if (!matchedCommand) {
       await message.reply(`I don't recognize that command.`);
     } else {
-      await matchedCommand.run(message, commandParser.args).catch(error => {
+      await matchedCommand.run(message).catch(error => {
         message.reply(`'${this.echoMessage(message)}' failed because of ${error}`);
       });
     }

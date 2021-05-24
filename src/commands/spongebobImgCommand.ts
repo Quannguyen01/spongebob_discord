@@ -1,5 +1,7 @@
 import { Message, MessageAttachment } from "discord.js";
+import { CommandParser } from "../models/commandParser";
 import Command from "./commandInterface";
+import config from '../config/botConfig';
 
 export class SpongeBobImgCommand implements Command {
   commandNames = ["sbimg", "mockimg"];
@@ -8,13 +10,15 @@ export class SpongeBobImgCommand implements Command {
     return `Use ${commandPrefix} to spongebobify the text`;
   }
 
-  async run(message: Message, args: string[]): Promise<void> {
-    let spongeTexts = args.map(word => this.spongebobify(word));
+  async run(message: Message): Promise<void> {
+    const commandParser = new CommandParser(message, config.prefix);
+
+    let spongeTexts = commandParser.args.map(word => this.spongebobify(word));
     let topText = spongeTexts.slice(0,spongeTexts.length/2).join(' ');
     let bottomText = spongeTexts.slice(spongeTexts.length/2).join(' ');
 
     const memeImg = 
-      `https://api.memegen.link/images/spongebob/${topText}/${bottomText}.png`
+      `https://api.memegen.link/images/spongebob/${topText}/${bottomText}.png`;
 
 
     const memeAttachment = new MessageAttachment(memeImg);

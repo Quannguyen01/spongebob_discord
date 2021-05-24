@@ -13,3 +13,4 @@
 
 export * from "./spongebobCommand";
 export * from "./spongebobImgCommand";
+export * from "./memeGenCommand";

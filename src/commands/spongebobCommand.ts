@@ -1,5 +1,7 @@
 import { Message } from "discord.js";
 import Command from "./commandInterface";
+import config from '../config/botConfig';
+import { CommandParser } from "../models/commandParser";
 
 export class SpongeBobCommand implements Command {
   commandNames = ["spongebob"];
@@ -8,8 +10,10 @@ export class SpongeBobCommand implements Command {
     return `Use ${commandPrefix} to spongebobify the text`;
   }
 
-  async run(message: Message, args: string[]): Promise<void> {
-    let spongeText = args.map(word => this.spongebobify(word)).join(' ');
+  async run(message: Message): Promise<void> {
+    const commandParser = new CommandParser(message, config.prefix);
+
+    let spongeText = commandParser.args.map(word => this.spongebobify(word)).join(' ');
 
     await message.reply(spongeText);
   }
