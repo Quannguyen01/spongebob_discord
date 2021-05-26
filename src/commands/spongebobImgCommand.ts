@@ -2,7 +2,7 @@ import { Message, MessageAttachment } from "discord.js";
 import { CommandParser } from "../models/commandParser";
 import Command from "./commandInterface";
 import config from '../config/botConfig';
-import { replaceMentionWithUsers } from "../utils";
+import { escapeSpecialCharacters, replaceMentionWithUsers } from "../utils";
 
 export class SpongeBobImgCommand implements Command {
   commandNames = ["sbimg", "mockimg"];
@@ -15,7 +15,11 @@ export class SpongeBobImgCommand implements Command {
     message.content = replaceMentionWithUsers(message);
     const commandParser = new CommandParser(message, config.prefix);
 
-    let spongeTexts = commandParser.args.map(word => this.spongebobify(word));
+    let spongeTexts = commandParser.args.map(word => {
+      word = this.spongebobify(word);
+      word = escapeSpecialCharacters(word);
+      return word;
+    });
     let topText = spongeTexts.slice(0,spongeTexts.length/2).join(' ');
     let bottomText = spongeTexts.slice(spongeTexts.length/2).join(' ');
 

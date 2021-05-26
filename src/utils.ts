@@ -10,6 +10,7 @@ export function getUsersFromMessages(message: Message): Collection<string, strin
   return mentionedUsers;
 }
 
+// This should have been an extension from Message. But I'm not sure how to do it
 export function replaceMentionWithUsers(message: Message): string {
   let content = message.content;
   const mentionedUsers = getUsersFromMessages(message);
@@ -24,4 +25,25 @@ export function replaceMentionWithUsers(message: Message): string {
   }
 
   return content;
+}
+
+export function escapeSpecialCharacters(message: string): string {
+  const charmap = new Collection<string, string>([
+    ["_", "__"],
+    ["-", "--"],
+    ["?", "~q"],
+    ["&", "~a"],
+    ["%", "~p"],
+    ["#", "~h"],
+    ["/", "~s"],
+    ["\\", "~b"],
+    ["''", "\""],
+  ]);
+
+  charmap.every((value, key) => {
+    message = message.replace(key, value);
+    return true;
+  })
+
+  return message;
 }

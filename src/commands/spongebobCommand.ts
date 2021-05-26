@@ -2,7 +2,7 @@ import { Message } from "discord.js";
 import Command from "./commandInterface";
 import config from '../config/botConfig';
 import { CommandParser } from "../models/commandParser";
-import { replaceMentionWithUsers } from "../utils";
+import { escapeSpecialCharacters, replaceMentionWithUsers } from "../utils";
 
 export class SpongeBobCommand implements Command {
   commandNames = ["spongebob"];
@@ -15,7 +15,11 @@ export class SpongeBobCommand implements Command {
     message.content = replaceMentionWithUsers(message);
     const commandParser = new CommandParser(message, config.prefix);
 
-    let spongeText = commandParser.args.map(word => this.spongebobify(word)).join(' ');
+    let spongeText = commandParser.args.map(word => {
+      word = this.spongebobify(word);
+      word = escapeSpecialCharacters(word);
+      return word;
+    }).join(' ');
 
     await message.reply(spongeText);
   }

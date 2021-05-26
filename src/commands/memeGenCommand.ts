@@ -2,7 +2,7 @@ import { Message, MessageAttachment } from "discord.js";
 import Command from "./commandInterface";
 import config from "../config/botConfig";
 import { CommandParser } from "../models/commandParser";
-import { replaceMentionWithUsers } from "../utils";
+import { escapeSpecialCharacters, replaceMentionWithUsers } from "../utils";
 
 export class MemeGenCommand implements Command {
   commandNames = [
@@ -178,7 +178,7 @@ export class MemeGenCommand implements Command {
       return;
     }
 
-    const memeTexts = commandParser.args;
+    const memeTexts = commandParser.args.map(arg => escapeSpecialCharacters(arg));
     let topText, bottomText: string;
     if (memeTexts.includes("|")) {
       topText = memeTexts.slice(0, memeTexts.indexOf("|")).join(' ');
